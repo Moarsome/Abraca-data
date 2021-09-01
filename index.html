@@ -32,6 +32,13 @@
     </div>
     <script type="text/javascript">
 
+        function getHour(unix)
+        {
+            intUnix = parseInt(unix);
+            var date = new Date(unix*1000);
+            return date.getHours();
+        }
+
         // Document ready start the script
         document.addEventListener('DOMContentLoaded', function(event) {
 
@@ -64,11 +71,15 @@
             let connectionId = customer["connection"]["connection_id"];
             let customerNumber = customer["customer_number"];
 
+
+            // ASSUME today's date is 2021-08-23
+            let groupBy = "day";
+            let todayDate = "2021-08-23";
+            let lastWeekDate = todayDate.substring(todayDate.lastIndexOf("-")+1) - "7"; // 7 days ago
+            let previousDate = todayDate.substring(0,todayDate.lastIndexOf("-")+1)+lastWeekDate;
+
             // Make an API call to /consumption/averages
-            const groupBy = "day";
-            const startDate = "2021-08-07";
-            const endDate = "2021-08-07";
-            let consumptionAvg = httpGet(`${API_URL}/consumption/averages/${customerNumber}/${connectionId}/?start_date=${startDate}&end_date=${endDate}&group_by=${groupBy}`, token);
+            let consumptionAvg = httpGet(`${API_URL}/consumption/averages/${customerNumber}/${connectionId}/?start_date=${previousDate}&end_date=${previousDate}&group_by=${groupBy}`, token);
 
             // Parse response to json format to display nicely.
             let jsonConsumption = JSON.parse(consumptionAvg);
@@ -84,7 +95,7 @@
             document.getElementById("hopHeader").style.display = "block";
 
             // Get user intervals object
-            let userIntervals = jsonConsumption["data"]["usage"]["2021-08-07"]["intervals"];
+            let userIntervals = jsonConsumption["data"]["usage"][previousDate]["intervals"];
             // Get hop intervals
             let intervals = jsonHop["data"]["intervals"];
 
@@ -106,6 +117,7 @@
                 }
             }
 
+            // Print highest off-peak power usage 
             alert("max interval: "+maxConsumption["consumption"]+" at "+maxConsumption["time"]);
 
             // Find user city
@@ -121,7 +133,7 @@
             let lat = jsonGeo[0]["lat"];
             let lon = jsonGeo[0]["lon"];
 
-            let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&appid=${openWeatherKey}`);
+            let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
             let jsonWeather = JSON.parse(weatherData);
 
             weatherHTML.textContent = JSON.stringify(jsonWeather, undefined, 4);
@@ -145,8 +157,12 @@
                 }
             }
 
-            alert("max temperature: "+maxTemp["temp"]+" at time: "+maxTemp["dt"]);
-            alert("min temperature: "+minTemp["temp"]+" at time: "+minTemp["dt"]);
+            // Get time of min/max temperatures and print
+            let maxHour = getHour(maxTemp["dt"]);
+            let minHour = getHour(minTemp["dt"]);
+
+            alert("Max temperature: "+maxTemp["temp"]+"°C at time: "+maxHour+":00");
+            alert("Min temperature: "+minTemp["temp"]+"°C at time: "+minHour+":00");
         });
 
     </script>
