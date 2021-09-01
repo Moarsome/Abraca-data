@@ -12,36 +12,20 @@
 </head>
 
 <body>
-    
+
     <div>
-        <h2 style="display: none;" id="sessionHeader">Session Data</h2>
-        <pre id="session">
-        </pre>
-
-        <h2 style="display: none;" id="consumptionHeader">Consumption Average Data</h2>
-        <pre id="consumption">
-        </pre>
-
-        <h2 style="display: none;" id="hopHeader">Hop Interval Data</h2>
-        <pre id="hop">
-        </pre>
-
-        <h2 style="display: none;" id="weatherHeader">Weather Data</h2>
-        <pre id="weather">
-        </pre>
+        <canvas id="myChart" width="400" height="400"></canvas>
     </div>
+
     <script type="text/javascript">
 
-        function getHour(unix)
-        {
+        function getHour(unix) {
             intUnix = parseInt(unix);
-            var date = new Date(unix*1000);
+            var date = new Date(unix * 1000);
             return date.getHours();
         }
-
         // Document ready start the script
-        document.addEventListener('DOMContentLoaded', function(event) {
-
+        document.addEventListener('DOMContentLoaded', function (event) {
             // Retrieve the access token from local storage
             let token = apiProvider.getAccessToken();
 
@@ -53,46 +37,34 @@
                 return;
             }
 
-            let sessionHTML = document.getElementById("session");
-            let consumptionHTML = document.getElementById("consumption");
-            let hopHTML = document.getElementById("hop");
-            let weatherHTML = document.getElementById("weather");
-            
             // Make an API call to /session
             let sessionResp = httpGet(`${API_URL}/session/`, token);
 
             // Parse response to json format
             let jsonSession = JSON.parse(sessionResp);
-            sessionHTML.textContent = JSON.stringify(jsonSession, undefined, 4);
-            document.getElementById("sessionHeader").style.display = "block";
 
             // Extract first customer information from session response
             let customer = jsonSession["data"]["customer"][0];
             let connectionId = customer["connection"]["connection_id"];
             let customerNumber = customer["customer_number"];
 
-
             // ASSUME today's date is 2021-08-23
             let groupBy = "day";
             let todayDate = "2021-08-23";
-            let lastWeekDate = todayDate.substring(todayDate.lastIndexOf("-")+1) - "7"; // 7 days ago
-            let previousDate = todayDate.substring(0,todayDate.lastIndexOf("-")+1)+lastWeekDate;
+            let lastWeekDate = todayDate.substring(todayDate.lastIndexOf("-") + 1) - "7"; // 7 days ago
+            let previousDate = todayDate.substring(0, todayDate.lastIndexOf("-") + 1) + lastWeekDate;
 
             // Make an API call to /consumption/averages
             let consumptionAvg = httpGet(`${API_URL}/consumption/averages/${customerNumber}/${connectionId}/?start_date=${previousDate}&end_date=${previousDate}&group_by=${groupBy}`, token);
 
             // Parse response to json format to display nicely.
             let jsonConsumption = JSON.parse(consumptionAvg);
-            consumptionHTML.textContent = JSON.stringify(jsonConsumption, undefined, 4);
-            document.getElementById("consumptionHeader").style.display = "block";
-            
+
             // Make API call to /hop
             let hopResp = httpGet(`${API_URL}/hop/`, token);
 
             // Parse hop and display
             let jsonHop = JSON.parse(hopResp);
-            hopHTML.textContent = JSON.stringify(jsonHop, undefined, 4);
-            document.getElementById("hopHeader").style.display = "block";
 
             // Get user intervals object
             let userIntervals = jsonConsumption["data"]["usage"][previousDate]["intervals"];
@@ -104,26 +76,23 @@
             let interval = 1;
 
             // Loop through user intervals to find highest consumption
-            for (interval in userIntervals)
-            {
+            for (interval in userIntervals) {
                 // Comparing highest interval with current interval values (in float values)
-                if (parseFloat(userIntervals[interval]["consumption"]) > parseFloat(maxConsumption["consumption"]))
-                {
+                if (parseFloat(userIntervals[interval]["consumption"]) > parseFloat(maxConsumption["consumption"])) {
                     // Ensure that this interval is off-peak
-                    if (intervals[interval]["active"] == "1")
-                    {
+                    if (intervals[interval]["active"] == "1") {
                         maxConsumption = userIntervals[interval];
                     }
                 }
             }
 
             // Print highest off-peak power usage 
-            alert("max interval: "+maxConsumption["consumption"]+" at "+maxConsumption["time"]);
+            alert("max interval: " + maxConsumption["consumption"] + " at " + maxConsumption["time"]);
 
             // Find user city
             let userAddress = customer["connection"]["address"];
-            let userCity = userAddress.substring(0,userAddress.lastIndexOf(","));
-            userCity = userCity.substring(userCity.lastIndexOf(",")+2);
+            let userCity = userAddress.substring(0, userAddress.lastIndexOf(","));
+            userCity = userCity.substring(userCity.lastIndexOf(",") + 2);
 
             // Insert city into OpenWeatherAPI
             let geoData = openWeatherGet(`http://api.openweathermap.org/geo/1.0/direct?q=${userCity}&limit=1&appid=${openWeatherKey}`);
@@ -136,23 +105,17 @@
             let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
             let jsonWeather = JSON.parse(weatherData);
 
-            weatherHTML.textContent = JSON.stringify(jsonWeather, undefined, 4);
-            document.getElementById("weatherHeader").style.display = "block";
-
             // Loop through times
             let hourIntervals = jsonWeather["hourly"];
             let maxTemp = hourIntervals[0];
             let minTemp = hourIntervals[0];
-            for (let hourInterval of hourIntervals)
-            {
+            for (let hourInterval of hourIntervals) {
                 // Find maximum temperature
-                if (parseFloat(hourInterval["temp"]) > parseFloat(maxTemp["temp"]))
-                {
+                if (parseFloat(hourInterval["temp"]) > parseFloat(maxTemp["temp"])) {
                     maxTemp = hourInterval;
                 }
                 // Find minimum temperature
-                if (parseFloat(hourInterval["temp"]) < parseFloat(minTemp["temp"]))
-                {
+                if (parseFloat(hourInterval["temp"]) < parseFloat(minTemp["temp"])) {
                     minTemp = hourInterval;
                 }
             }
@@ -161,15 +124,20 @@
             let maxHour = getHour(maxTemp["dt"]);
             let minHour = getHour(minTemp["dt"]);
 
-            alert("Max temperature: "+maxTemp["temp"]+"°C at time: "+maxHour+":00");
-            alert("Min temperature: "+minTemp["temp"]+"°C at time: "+minHour+":00");
+            alert("Max temperature: " + maxTemp["temp"] + "°C at time: " + maxHour + ":00");
+            alert("Min temperature: " + minTemp["temp"] + "°C at time: " + minHour + ":00");
         });
-
     </script>
 
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/oauth2-client-js@0.0.15/dist/oauth2-client.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script src="/graph.js"></script>
+
+    <script type="text/javascript"
+        src="https://cdn.jsdelivr.net/npm/oauth2-client-js@0.0.15/dist/oauth2-client.js"></script>
     <!-- Load the config variables-->
     <script type="text/javascript" src="/auth.js"></script>
 
 </body>
+
 </html>
