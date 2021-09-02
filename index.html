@@ -171,13 +171,13 @@
         <div class="electric-section">
             <h1 class="smallerHeader">Usage Predictions</h1>
             <div class="elec-chart">
-
+                <canvas id="usageChart"></canvas>
             </div>
         </div>
         <div class="weather-section">
             <h1 class="smallerHeader">Weather Predictions</h1>
             <div class="temp-chart">
-                <canvas id="myChart"></canvas>
+                <canvas id="weatherChart"></canvas>
             </div>
         </div>
     </div>
@@ -283,7 +283,8 @@
             // Loop through times
             parseWeather(jsonWeather);
 
-            createChart(getTempData(),getTimeData());
+            createWeatherChart(getTempData(),getTimeData());
+            createUsageChart();
         });
     </script>
 
