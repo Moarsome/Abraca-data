@@ -7,7 +7,7 @@ function createChart(temperatureData, timeData)
         data: {
             labels: timeData,
             datasets: [{
-                label: 'Temperatures',
+                label: 'Temperatures (°C)',
                 data: temperatureData,
                 backgroundColor: [
                     'rgba(255, 99, 132, 0.2)',

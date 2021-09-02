@@ -5,20 +5,42 @@ function parseWeather(jsonWeather) {
     let hourIntervals = jsonWeather["hourly"];
     let maxTemp = hourIntervals[0];
     let minTemp = hourIntervals[0];
+    var running = true;
 
     for (let hourInterval of hourIntervals) {
-        // Find maximum temperature
-        if (parseFloat(hourInterval["temp"]) > parseFloat(maxTemp["temp"])) {
-            maxTemp = hourInterval;
-        }
-        // Find minimum temperature
-        if (parseFloat(hourInterval["temp"]) < parseFloat(minTemp["temp"])) {
-            minTemp = hourInterval;
-        }
+        if (running == true)
+        {
+            // Find maximum temperature
+            if (parseFloat(hourInterval["temp"]) > parseFloat(maxTemp["temp"])) {
+                maxTemp = hourInterval;
+            }
+            // Find minimum temperature
+            if (parseFloat(hourInterval["temp"]) < parseFloat(minTemp["temp"])) {
+                minTemp = hourInterval;
+            }
 
-        // Add temperature data to array
-        temperatureData.push(hourInterval["temp"]);
-        timeData.push(getHour(hourInterval["dt"]));
+            var currentHour = getHour(hourInterval["dt"]);
+            if (currentHour >= 12)
+            {
+                if (currentHour != 12)
+                {
+                    currentHour -= 12;
+                }
+                currentHour += ":00 PM";
+            }
+            else
+            {
+                currentHour += ":00 AM";
+            }
+
+            // Add temperature data to array
+            temperatureData.push(hourInterval["temp"]);
+            timeData.push(currentHour);
+            if (getHour(hourInterval["dt"]) == "0")
+            {
+                running = false;
+            }
+        }
     }
 
     // Get time of min/max temperatures and print
