@@ -74,6 +74,7 @@ function parseHop(jsonHop, jsonConsumption, previousDate) {
     
     // Print highest off-peak power usage 
     alert("max interval: " + maxConsumption["consumption"] + " at " + maxConsumption["time"]);
+    // return "max interval" + maxConsumption["consumption"] + " at " + maxConsumption["time"];
 }
 
 function getTempData()
