@@ -29,6 +29,17 @@
         h2#estimatedHour {
             background-color: yellow;
             border-radius: 20px;
+            padding-top: 30px;
+            width: 350px;
+            height: 70px;
+        }
+
+        h2#currentHour {
+            background-color: yellow;
+            border-radius: 20px;
+            padding-top: 30px;
+            width: 350px;
+            height: 70px;
         }
 
         .top-title {
@@ -57,7 +68,8 @@
             flex-direction: row;
             gap: 100px;
             justify-content: center;
-            font-size: large;
+            font-size: 20px;
+            font-weight: bold;
             text-align: center;
             margin-top: 40px;
             word-spacing: 0;
@@ -69,12 +81,6 @@
             width: 220px;
         }
 
-        .button {
-            margin-top: 50px;
-            display: flex;
-            flex-direction: row;
-        }
-
         .temp-chart {
             display: flex;
             width: 35vw;
@@ -83,8 +89,6 @@
 
         .weather-section {
             padding: 5px;
-            display: flex;
-            justify-content: right;
             background-color: #D4E9FF;
             width: 45vw;
             height:45vh;
@@ -92,6 +96,7 @@
 
         .smallerHeader {
             font-family: Arial, Helvetica, sans-serif;
+            word-spacing: 0;
             font-size: medium;
             font-weight: bold;
         }
@@ -114,7 +119,7 @@
         </div>
     </div>
 
-    <div class="bottom">
+    <div class="middle">
         <div class="electric-section">
             <h1 class="smallHeader">Usage Predictions</h1>
             <div class="elec-chart">
