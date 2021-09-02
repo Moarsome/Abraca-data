@@ -1,4 +1,4 @@
-function createChart(temperatureData, timeData)
+function createChart(temperatureData, timeData, powerHour)
 {
     var ctx = document.getElementById('myChart').getContext('2d');
 
@@ -6,7 +6,8 @@ function createChart(temperatureData, timeData)
         type: 'line',
         data: {
             labels: timeData,
-            datasets: [{
+            datasets: [
+                {
                 label: 'Temperatures (°C)',
                 data: temperatureData,
                 backgroundColor: [
@@ -26,7 +27,8 @@ function createChart(temperatureData, timeData)
                     'rgba(255, 159, 64, 1)'
                 ],
                 borderWidth: 1
-            }]
+            },
+        ]
         },
         options: {
             scales: {
