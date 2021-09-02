@@ -164,7 +164,7 @@
     <div class="buttons">
         <p>Your estimated Hour of Power is based on the information below. 
             Click the button to change your Hour of Power.</p>
-        <button class="button">Change</button>
+        <button class="button" onclick="changeHour()">Change</button>
     </div>
 
     <div class="middle">
@@ -184,6 +184,22 @@
 
     <script type="text/javascript">
         // Translates unix time into current time
+
+
+        let connectionId;
+        let customerNumber;
+        let token;
+        let expressData;
+
+        // Change current power hour to estimated one
+        function changeHour()
+            {
+                httpPost(`/hop/${customerNumber}/${connectionId}/`, token, "start="+getEstimatedInterval());
+                console.log("testing");
+                let currentHTML = document.getElementById("currentHour");
+                currentHTML.textContent = expressData;
+            }
+
         function getHour(unix) 
         {
             intUnix = parseInt(unix);
@@ -195,7 +211,7 @@
         document.addEventListener('DOMContentLoaded', function (event) 
         {
             // Retrieve the access token from local storage
-            let token = apiProvider.getAccessToken();
+            token = apiProvider.getAccessToken();
 
             let openWeatherKey = "1c69bc2783cad2acbebae2820882055b";
 
@@ -211,8 +227,8 @@
 
             // Extract first customer information from session response
             let customer = jsonSession["data"]["customer"][0];
-            let connectionId = customer["connection"]["connection_id"];
-            let customerNumber = customer["customer_number"];
+            connectionId = customer["connection"]["connection_id"];
+            customerNumber = customer["customer_number"];
 
             // ASSUME today's date is 2021-08-23
             let groupBy = "day";
@@ -238,7 +254,7 @@
             welcomeHTML.innerHTML = "Welcome, "+userName;
 
             // Show estimated hour
-            var expressData = parseHop(jsonHop,jsonConsumption, previousDate);
+            expressData = parseHop(jsonHop,jsonConsumption, previousDate);
             let estimatedHTML = document.getElementById("estimatedHour");
             estimatedHTML.textContent = expressData;
 
@@ -263,12 +279,6 @@
 
             let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
             let jsonWeather = JSON.parse(weatherData);
-
-            // Change current power hour to estimated one
-            function changeHour()
-            {
-                httpPost(`/hop/${customerNumber}/${connectionId}/`, token, "start="+getEstimatedInterval());
-            }
 
             // Loop through times
             parseWeather(jsonWeather);

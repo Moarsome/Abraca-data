@@ -22,6 +22,17 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(self.getContent(_path))
 
+    def do_POST(self):
+        _path = self.getPath()
+        if _path is None:
+            self.send_response(404)
+            self.end_headers()
+            return
+        self.send_response(200)
+        self.send_header('Content-Type', self.content_type)
+        self.end_headers()
+        self.wfile.write(self.getContent(_path))
+
     def getPath(self):
         if self.path == '/':
             return path.join(DIR_PATH, 'index.html')

@@ -16,7 +16,8 @@ const apiProvider = new oauth.Provider({
  * @param {string} url url to get.
  * @param {string} token access token to authenticate.
  */
-function httpGet(url, token) {
+function httpGet(url, token) 
+{
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, false); // false for synchronous request
     xmlHttp.setRequestHeader("Authorization", `Bearer ${token}`); // Add auth token to headers
@@ -24,15 +25,16 @@ function httpGet(url, token) {
     return xmlHttp.response;
 }
 
-function httpPost(url, token, data) {
+function httpPost(url, token, data) 
+{
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", url, false); // false for synchronous request
+    xmlHttp.open("POST", url, true); // false for synchronous request
     xmlHttp.setRequestHeader("Authorization", `Bearer ${token}`); // Add auth token to headers
     xmlHttp.send(data);
 }
 
-
-function openWeatherGet(url) {
+function openWeatherGet(url) 
+{
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", url, false);
     xmlHttp.send();
