@@ -47,8 +47,8 @@ function parseWeather(jsonWeather) {
     let maxHour = getHour(maxTemp["dt"]);
     let minHour = getHour(minTemp["dt"]);
 
-    alert("Max temperature: " + maxTemp["temp"] + "°C at time: " + maxHour + ":00");
-    alert("Min temperature: " + minTemp["temp"] + "°C at time: " + minHour + ":00");
+    // alert("Max temperature: " + maxTemp["temp"] + "°C at time: " + maxHour + ":00");
+    // alert("Min temperature: " + minTemp["temp"] + "°C at time: " + minHour + ":00");
 }
 
 function parseHop(jsonHop, jsonConsumption, previousDate) {
@@ -71,9 +71,11 @@ function parseHop(jsonHop, jsonConsumption, previousDate) {
             }
         }
     }
+    // Add 1 hour to current hour (for presentation purposes)
+    var hour = parseInt(maxConsumption["time"].substring(0,maxConsumption["time"].indexOf(":"))) + 1;
 
     // Print highest off-peak power usage 
-    return maxConsumption["time"];
+    return maxConsumption["time"]+" - "+hour+maxConsumption["time"].substring(maxConsumption["time"].indexOf(":"));
 }
 
 function getTempData()
