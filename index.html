@@ -96,6 +96,7 @@
         .weather-section {
             padding: 5px;
             background-color: #D4E9FF;
+            border-radius: 15px 50px;
             width: 45vw;
             height:45vh;
         }
@@ -103,6 +104,7 @@
         .electric-section {
             padding: 5px;
             background-color: #FFF6E1;
+            border-radius: 15px 50px;
             width: 45vw;
             height:45vh;
         }
@@ -251,7 +253,7 @@
             // Show 'Welcome, User'
             var userName = jsonSession["data"]["customer"][0]["first_name"];
             let welcomeHTML = document.getElementById("welcome");
-            welcomeHTML.innerHTML = "Welcome, "+userName;
+            welcomeHTML.innerHTML = "Welcome "+userName;
 
             // Show estimated hour
             expressData = parseHop(jsonHop,jsonConsumption, previousDate);
