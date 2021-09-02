@@ -12,9 +12,8 @@
 </head>
 
 <body>
-
-    <div>
-        <canvas id="myChart" width="400" height="400"></canvas>
+    <div style="position: relative; height:30vh; width:50vw">
+        <canvas id="myChart"></canvas>
     </div>
 
     <script type="text/javascript">
@@ -66,28 +65,7 @@
             // Parse hop and display
             let jsonHop = JSON.parse(hopResp);
 
-            // Get user intervals object
-            let userIntervals = jsonConsumption["data"]["usage"][previousDate]["intervals"];
-            // Get hop intervals
-            let intervals = jsonHop["data"]["intervals"];
-
-            // Variable for highest consumption and current interval
-            let maxConsumption = userIntervals[1];
-            let interval = 1;
-
-            // Loop through user intervals to find highest consumption
-            for (interval in userIntervals) {
-                // Comparing highest interval with current interval values (in float values)
-                if (parseFloat(userIntervals[interval]["consumption"]) > parseFloat(maxConsumption["consumption"])) {
-                    // Ensure that this interval is off-peak
-                    if (intervals[interval]["active"] == "1") {
-                        maxConsumption = userIntervals[interval];
-                    }
-                }
-            }
-
-            // Print highest off-peak power usage 
-            alert("max interval: " + maxConsumption["consumption"] + " at " + maxConsumption["time"]);
+            parseHop(jsonHop,jsonConsumption, previousDate);
 
             // Find user city
             let userAddress = customer["connection"]["address"];
@@ -106,32 +84,17 @@
             let jsonWeather = JSON.parse(weatherData);
 
             // Loop through times
-            let hourIntervals = jsonWeather["hourly"];
-            let maxTemp = hourIntervals[0];
-            let minTemp = hourIntervals[0];
-            for (let hourInterval of hourIntervals) {
-                // Find maximum temperature
-                if (parseFloat(hourInterval["temp"]) > parseFloat(maxTemp["temp"])) {
-                    maxTemp = hourInterval;
-                }
-                // Find minimum temperature
-                if (parseFloat(hourInterval["temp"]) < parseFloat(minTemp["temp"])) {
-                    minTemp = hourInterval;
-                }
-            }
+            parseWeather(jsonWeather);
 
-            // Get time of min/max temperatures and print
-            let maxHour = getHour(maxTemp["dt"]);
-            let minHour = getHour(minTemp["dt"]);
-
-            alert("Max temperature: " + maxTemp["temp"] + "°C at time: " + maxHour + ":00");
-            alert("Min temperature: " + minTemp["temp"] + "°C at time: " + minHour + ":00");
+            createChart(getTempData(),getTimeData());
         });
     </script>
 
+    <script type="text/javascript" src="/main.js"></script>   
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script src="/graph.js"></script>
+    <script type="text/javascript" src="/graph.js"></script>
 
     <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/oauth2-client-js@0.0.15/dist/oauth2-client.js"></script>

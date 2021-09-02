@@ -33,6 +33,8 @@ class RequestHandler(BaseHTTPRequestHandler):
             return path.join(DIR_PATH, "auth.js")
         elif self.path.startswith("/graph.js"):
             return path.join(DIR_PATH, "graph.js")
+        elif self.path.startswith("/main.js"):
+            return path.join(DIR_PATH, "main.js")
 
     def getContent(self, content_path):
         with open(content_path, mode='r', encoding='utf-8') as f:
