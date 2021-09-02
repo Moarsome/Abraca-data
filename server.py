@@ -35,8 +35,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             return path.join(DIR_PATH, "graph.js")
         elif self.path.startswith("/main.js"):
             return path.join(DIR_PATH, "main.js")
-        elif self.path.startswith("/bad_weather.png"):
-            return path.join(DIR_PATH, "bad_weather.png")
 
     def getContent(self, content_path):
         with open(content_path, mode='r', encoding='utf-8') as f:

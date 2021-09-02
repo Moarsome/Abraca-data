@@ -92,11 +92,15 @@
     </div>
 
     <div class="middle">
-        <a class="middle-title">Current Hour of Power</a>
-        <a class="middle-title">Estimated Hour of Power</a>
-    </div>
-    <div class="middle">
-        <button onclick="parseHop(jsonHop,jsonConsumption, previousDate)">Click</button>
+        <div>
+            <a class = "middle-title"> Current Hour of Power </a>
+            <a id="currentHour"></a>
+        </div>
+        <div>
+            <a class="middle-title">Estimated Hour of Power</a>
+            <h1 id="estimatedHour"></h1>
+        </div>
+        
     </div>
     <div class="weather-section">
         <h1 class="smallerHeader">Weather Predictions</h1>
@@ -154,7 +158,9 @@
             // Parse hop and display
             let jsonHop = JSON.parse(hopResp);
 
-            parseHop(jsonHop,jsonConsumption, previousDate);
+            var expressData = parseHop(jsonHop,jsonConsumption, previousDate);
+            let estimatedHTML = document.getElementById("estimatedHour");
+            estimatedHTML.textContent = expressData;
 
             // Find user city
             let userAddress = customer["connection"]["address"];
