@@ -22,8 +22,11 @@
         }
         
         img {
-            width: 60%;
-            height: 60%;
+            width: 125px;
+            height: 90px;
+            left: 10px;
+            display: flex;
+            position: absolute;
         }
 
         p#estimatedHour {
@@ -49,6 +52,7 @@
             text-align: center;
             align-items: center;
             width: 300px;
+            display: flex;
         }
     
         .main {
@@ -143,6 +147,7 @@
 <body>
     <div class="top-title">
         <img src="https://www.lassoo.co.nz/wp-content/uploads/2020/08/electric-kiwi-1.png">
+        <h1 id="welcome">Welcome</h1>
     </div>
 
     <div class="middle">
@@ -159,7 +164,7 @@
     <div class="buttons">
         <p>Your estimated Hour of Power is based on the information below. 
             Click the button to change your Hour of Power.</p>
-        <button class="button" type="button">Change</button>
+        <button class="button">Change</button>
     </div>
 
     <div class="middle">
@@ -178,14 +183,17 @@
     </div>
 
     <script type="text/javascript">
-
-        function getHour(unix) {
+        // Translates unix time into current time
+        function getHour(unix) 
+        {
             intUnix = parseInt(unix);
             var date = new Date(unix * 1000);
             return date.getHours();
         }
+
         // Document ready start the script
-        document.addEventListener('DOMContentLoaded', function (event) {
+        document.addEventListener('DOMContentLoaded', function (event) 
+        {
             // Retrieve the access token from local storage
             let token = apiProvider.getAccessToken();
 
@@ -224,6 +232,11 @@
             let hopUserResp = httpGet(`${API_URL}/hop/${customerNumber}/${connectionId}/`, token);
             let jsonHopUser = JSON.parse(hopUserResp);
 
+            // Show 'Welcome, User'
+            var userName = jsonSession["data"]["customer"][0]["first_name"];
+            let welcomeHTML = document.getElementById("welcome");
+            welcomeHTML.innerHTML = "Welcome, "+userName;
+
             // Show estimated hour
             var expressData = parseHop(jsonHop,jsonConsumption, previousDate);
             let estimatedHTML = document.getElementById("estimatedHour");
@@ -251,7 +264,11 @@
             let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
             let jsonWeather = JSON.parse(weatherData);
 
-            
+            // Change current power hour to estimated one
+            function changeHour()
+            {
+                httpPost(`/hop/${customerNumber}/${connectionId}/`, token, "start="+getEstimatedInterval());
+            }
 
             // Loop through times
             parseWeather(jsonWeather);

@@ -1,5 +1,6 @@
 let temperatureData = [];
 let timeData = [];
+let estimatedInterval;
 
 function parseWeather(jsonWeather) {
     let hourIntervals = jsonWeather["hourly"];
@@ -68,6 +69,7 @@ function parseHop(jsonHop, jsonConsumption, previousDate) {
             // Ensure that this interval is off-peak
             if (intervals[interval]["active"] == "1") {
                 maxConsumption = userIntervals[interval];
+                estimatedInterval = interval;
             }
         }
     }
@@ -86,4 +88,9 @@ function getTempData()
 function getTimeData()
 {
     return timeData;
+}
+
+function getEstimatedInterval()
+{
+    return estimatedInterval;
 }
