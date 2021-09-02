@@ -47,6 +47,23 @@
             border-radius: 10%;
         }
 
+        .middle {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            justify-content: center;
+            font-size: large;
+            text-align: center;
+            margin-top: 20px;
+            word-spacing: 0;
+        }
+
+        .middle-title {
+            margin-top: 10px;
+            border: 2px hidden #201a1a;
+            width: 220px;
+        }
+
         .temp-chart {
             display: flex;
             position: relative;
@@ -60,7 +77,13 @@
     <div class="top-title">
         <img src="https://www.lassoo.co.nz/wp-content/uploads/2020/08/electric-kiwi-1.png">
     </div>
-
+    <div class="middle">
+        <a class="middle-title">Current Hour of Power</a>
+        <a class="middle-title">Estimated Hour of Power</a>
+    </div>
+    <div class="middle">
+        <button onclick="parseHop(jsonHop,jsonConsumption, previousDate)">Click</button>
+    </div>
     <div class="temp-chart">
         <canvas id="myChart"></canvas>
     </div>
