@@ -26,6 +26,11 @@
             height: 80%;
         }
 
+        h2#estimatedHour {
+            background-color: yellow;
+            border-radius: 20px;
+        }
+
         .top-title {
             margin: auto;
             margin-top: 10px;
@@ -50,11 +55,11 @@
         .middle {
             display: flex;
             flex-direction: row;
-            gap: 20px;
+            gap: 100px;
             justify-content: center;
             font-size: large;
             text-align: center;
-            margin-top: 20px;
+            margin-top: 40px;
             word-spacing: 0;
         }
 
@@ -64,15 +69,22 @@
             width: 220px;
         }
 
+        .button {
+            margin-top: 50px;
+            display: flex;
+            flex-direction: row;
+        }
+
         .temp-chart {
             display: flex;
-            position: relative;
             width: 35vw;
             height: 35vh;
         }
 
         .weather-section {
             padding: 5px;
+            display: flex;
+            justify-content: right;
             background-color: #D4E9FF;
             width: 45vw;
             height:45vh;
@@ -94,18 +106,26 @@
     <div class="middle">
         <div>
             <a class = "middle-title"> Current Hour of Power </a>
-            <a id="currentHour"></a>
+            <h2 id="currentHour"></a>
         </div>
         <div>
             <a class="middle-title">Estimated Hour of Power</a>
-            <h1 id="estimatedHour"></h1>
+            <h2 id="estimatedHour"></h1>
         </div>
-        
     </div>
-    <div class="weather-section">
-        <h1 class="smallerHeader">Weather Predictions</h1>
-        <div class="temp-chart">
-            <canvas id="myChart"></canvas>
+
+    <div class="bottom">
+        <div class="electric-section">
+            <h1 class="smallHeader">Usage Predictions</h1>
+            <div class="elec-chart">
+
+            </div>
+        </div>
+        <div class="weather-section">
+            <h1 class="smallerHeader">Weather Predictions</h1>
+            <div class="temp-chart">
+                <canvas id="myChart"></canvas>
+            </div>
         </div>
     </div>
 
