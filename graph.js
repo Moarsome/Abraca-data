@@ -1,4 +1,4 @@
-function createWeatherChart(temperatureData, timeData, powerHour)
+function createWeatherChart(temperatureData, timeData)
 {
     var ctx = document.getElementById('weatherChart').getContext('2d');
 
@@ -11,22 +11,12 @@ function createWeatherChart(temperatureData, timeData, powerHour)
                 label: 'Temperatures (°C)',
                 data: temperatureData,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgb(255, 255, 255)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgb(0, 40, 77)'
                 ],
-                borderWidth: 1
+                borderWidth: 2
             },
         ]
         },
@@ -41,9 +31,9 @@ function createWeatherChart(temperatureData, timeData, powerHour)
 
 }
 
-function createUsageChart(temperatureData, timeData, powerHour)
+function createUsageChart(usageData, timeData)
 {
-    var ctx = document.getElementById('weatherChart').getContext('2d');
+    var ctx = document.getElementById('usageChart').getContext('2d');
 
     var myChart = new Chart(ctx, {
         type: 'line',
@@ -51,25 +41,15 @@ function createUsageChart(temperatureData, timeData, powerHour)
             labels: timeData,
             datasets: [
                 {
-                label: 'Temperatures (°C)',
-                data: temperatureData,
+                label: 'Electricity Usage (kWh)',
+                data: usageData,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                    'rgb(255, 255, 255)'
                 ],
                 borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    'rgb(230, 115, 0)'
                 ],
-                borderWidth: 1
+                borderWidth: 2
             },
         ]
         },

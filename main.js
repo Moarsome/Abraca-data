@@ -1,6 +1,8 @@
 let temperatureData = [];
 let timeData = [];
 let estimatedInterval;
+let hourAverages = [];
+let dateTimeline = [];
 
 function parseWeather(jsonWeather) {
     let hourIntervals = jsonWeather["hourly"];
@@ -63,15 +65,29 @@ function parseHop(jsonHop, jsonConsumption, previousDate) {
     let interval = 1;
 
     // Loop through user intervals to find highest consumption
-    for (interval in userIntervals) {
+    for (interval in userIntervals) 
+    {
+        //console.log(userIntervals[interval]["consumption"] +" at "+userIntervals[interval]["time"]+", offpeak: "+intervals[interval]["active"]);
         // Comparing highest interval with current interval values (in float values)
-        if (parseFloat(userIntervals[interval]["consumption"]) > parseFloat(maxConsumption["consumption"])) {
+        if (parseFloat(userIntervals[interval]["consumption"]) > parseFloat(maxConsumption["consumption"])) 
+        {
             // Ensure that this interval is off-peak
-            if (intervals[interval]["active"] == "1") {
+            if (intervals[interval]["active"] == "1") 
+            {
                 maxConsumption = userIntervals[interval];
                 estimatedInterval = interval;
             }
         }
+    }
+
+    
+    
+    // Loop through dates
+    let date;
+    for (date in jsonConsumption["data"]["usage"])
+    {
+        hourAverages.push(jsonConsumption["data"]["usage"][date]["intervals"][estimatedInterval]["consumption"]);
+        dateTimeline.push(date);
     }
     // Add 1 hour to current hour (for presentation purposes)
     var hour = parseInt(maxConsumption["time"].substring(0,maxConsumption["time"].indexOf(":"))) + 1;
@@ -93,4 +109,14 @@ function getTimeData()
 function getEstimatedInterval()
 {
     return estimatedInterval;
+}
+
+function getHourAverages()
+{
+    return hourAverages;
+}
+
+function getDateTimeline()
+{
+    return dateTimeline;
 }

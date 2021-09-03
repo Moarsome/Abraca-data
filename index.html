@@ -95,7 +95,7 @@
 
         .weather-section {
             padding: 5px;
-            background-color: #D4E9FF;
+            background-color: #e6f3ff;
             border-radius: 15px 50px;
             width: 45vw;
             height:45vh;
@@ -117,27 +117,33 @@
             font-weight: bold;
         }
 
+        #welcome {
+            word-spacing: 0;
+        }
+
         .buttons {
             gap: 100px;
             justify-content: center;
-            font-size: small;
+            font-size: medium;
             text-align: center;
             margin-top: 40px;
             word-spacing: 0;
         }
 
         .button {
-            background-color: #f5f5f5;
+            background-color: #ddb308;
+            color: black;
             border: 1px solid transparent;
             font-size: medium;
-            padding: 5px 10px;
+            padding: 10px 30px;
             border-radius: 5px;
         }
 
         .button:hover{
             border: 1px solid #c8c8c8;
-            padding: 5px 10px;
-            color: #080808;
+            color: white;
+            padding: 10px 30px;
+            border-radius: 5px;
         }
 
         .button:focus{
@@ -154,7 +160,7 @@
 
     <div class="middle">
         <div>
-            <a class = "middle-title"> Current Hour of Power </a>
+            <a class = "middle-title">Current Hour of Power </a>
             <p id="currentHour"></p>
         </div>
         <div>
@@ -166,13 +172,13 @@
     <div class="buttons">
         <p>Your estimated Hour of Power is based on the information below. 
             Click the button to change your Hour of Power.</p>
-        <button class="button" onclick="changeHour()">Change</button>
+        <button class="button" onclick="changeHour()">OPTIMISE HOUR</button>
     </div>
 
     <div class="middle">
         <div class="electric-section">
-            <h1 class="smallerHeader">Usage Predictions</h1>
-            <div class="elec-chart">
+            <h1 class="smallerHeader">Usage Predictions (over 7 days for the estimated power of hour)</h1>
+            <div class="temp-chart">
                 <canvas id="usageChart"></canvas>
             </div>
         </div>
@@ -195,12 +201,12 @@
 
         // Change current power hour to estimated one
         function changeHour()
-            {
-                httpPost(`/hop/${customerNumber}/${connectionId}/`, token, "start="+getEstimatedInterval());
-                console.log("testing");
-                let currentHTML = document.getElementById("currentHour");
-                currentHTML.textContent = expressData;
-            }
+        {
+            httpPost(`/hop/${customerNumber}/${connectionId}/`, token, "start="+getEstimatedInterval());
+            console.log("testing");
+            let currentHTML = document.getElementById("currentHour");
+            currentHTML.textContent = expressData;
+        }
 
         function getHour(unix) 
         {
@@ -239,7 +245,7 @@
             let previousDate = todayDate.substring(0, todayDate.lastIndexOf("-") + 1) + lastWeekDate;
 
             // Make an API call to /consumption/averages
-            let consumptionAvg = httpGet(`${API_URL}/consumption/averages/${customerNumber}/${connectionId}/?start_date=${previousDate}&end_date=${previousDate}&group_by=${groupBy}`, token);
+            let consumptionAvg = httpGet(`${API_URL}/consumption/averages/${customerNumber}/${connectionId}/?start_date=${previousDate}&end_date=${todayDate}&group_by=${groupBy}`, token);
             let jsonConsumption = JSON.parse(consumptionAvg);
 
             // Make API call to /hop
@@ -253,7 +259,7 @@
             // Show 'Welcome, User'
             var userName = jsonSession["data"]["customer"][0]["first_name"];
             let welcomeHTML = document.getElementById("welcome");
-            welcomeHTML.innerHTML = "Welcome "+userName;
+            welcomeHTML.innerHTML = "Welcome, "+userName;
 
             // Show estimated hour
             expressData = parseHop(jsonHop,jsonConsumption, previousDate);
@@ -282,11 +288,14 @@
             let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
             let jsonWeather = JSON.parse(weatherData);
 
+            // Gather average electricity usage
+
             // Loop through times
             parseWeather(jsonWeather);
-
             createWeatherChart(getTempData(),getTimeData());
-            createUsageChart();
+
+            
+            createUsageChart(getHourAverages(),getDateTimeline());
         });
     </script>
 
