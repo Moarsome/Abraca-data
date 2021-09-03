@@ -177,7 +177,7 @@
 
     <div class="middle">
         <div class="electric-section">
-            <h1 class="smallerHeader">Usage Predictions (over 7 days for the estimated power of hour)</h1>
+            <h1 class="smallerHeader" id="usageTitle">Usage Predictions (over 7 days for the estimated power of hour)</h1>
             <div class="temp-chart">
                 <canvas id="usageChart"></canvas>
             </div>
@@ -295,7 +295,7 @@
             parseWeather(jsonWeather);
             createWeatherChart(getTempData(),getTimeData());
 
-            
+            document.getElementById("usageTitle").innerHTML = "Usage Predictions (over 7 days from "+expressData+")";
             createUsageChart(getHourAverages(),getDateTimeline());
         });
     </script>
