@@ -222,8 +222,6 @@
             // Retrieve the access token from local storage
             token = apiProvider.getAccessToken();
 
-            let openWeatherKey = "1c69bc2783cad2acbebae2820882055b";
-
             // Redirect to auth route if token is not retrieved
             if (token == null) {
                 window.location.href = "/auth";
@@ -279,14 +277,14 @@
             userCity = userCity.substring(userCity.lastIndexOf(",") + 2);
 
             // Insert city into OpenWeatherAPI
-            let geoData = openWeatherGet(`http://api.openweathermap.org/geo/1.0/direct?q=${userCity}&limit=1&appid=${openWeatherKey}`);
+            let geoData = openWeatherGet(`http://api.openweathermap.org/geo/1.0/direct?q=${userCity}&limit=1&appid=`);
             let jsonGeo = JSON.parse(geoData);
 
             // Retrieve latitude and longitude from geographic data
             let lat = jsonGeo[0]["lat"];
             let lon = jsonGeo[0]["lon"];
 
-            let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=${openWeatherKey}`);
+            let weatherData = openWeatherGet(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,current,daily&units=metric&appid=`);
             let jsonWeather = JSON.parse(weatherData);
 
             // Gather average electricity usage

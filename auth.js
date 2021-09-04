@@ -3,6 +3,7 @@ const API_URL="https://api-dev.electrickiwi.co.nz"
 const SCOPES="read_session read_consumption_averages read_hop_intervals_config read_hop_connection save_hop_connection"
 const CALLBACK_URL= "http://localhost:5080/callback"
 const CLIENT_ID="yoxpulzytlasXwnnwRUrbRj5"
+const WEATHER_KEY="1c69bc2783cad2acbebae2820882055b"
 
 
 const oauth = window["oauth2-client-js"];
@@ -28,7 +29,7 @@ function httpGet(url, token)
 function httpPost(url, token, data) 
 {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("POST", url, true); // false for synchronous request
+    xmlHttp.open("POST", url, true); 
     xmlHttp.setRequestHeader("Authorization", `Bearer ${token}`); // Add auth token to headers
     xmlHttp.send(data);
 }
@@ -36,7 +37,7 @@ function httpPost(url, token, data)
 function openWeatherGet(url) 
 {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", url, false);
+    xmlHttp.open("GET", url+WEATHER_KEY, false);
     xmlHttp.send();
     return xmlHttp.response;
 }
