@@ -2,8 +2,8 @@ const AUTH_URL="https://welcome-dev.electrickiwi.co.nz/oauth/authorize"
 const API_URL="https://api-dev.electrickiwi.co.nz"
 const SCOPES="read_session read_consumption_averages read_hop_intervals_config read_hop_connection save_hop_connection"
 const CALLBACK_URL= "http://localhost:5080/callback"
-const CLIENT_ID="yoxpulzytlasXwnnwRUrbRj5"
-const WEATHER_KEY="1c69bc2783cad2acbebae2820882055b"
+const CLIENT_ID="redacted"
+const WEATHER_KEY="redacted"
 
 
 const oauth = window["oauth2-client-js"];
